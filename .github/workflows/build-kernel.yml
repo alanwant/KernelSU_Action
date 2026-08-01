@@ -185,14 +185,12 @@ jobs:
     - name: Download the kernel source code
       run: |
         cd $GITHUB_WORKSPACE/kernel_workspace
-        if [[ ${{ env.KERNEL_SOURCE }} =~ git ]]; then
-          if [[ ${{ env.KERNEL_SOURCE }} == *'.tar.gz' ]]; then
-            wget -O android-kernel.tar.gz ${{ env.KERNEL_SOURCE }}
-            mkdir android-kernel
-            tar -C android-kernel/ -zxvf android-kernel.tar.gz
-          else
-            git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
-          fi        
+        if [[ ${{ env.KERNEL_SOURCE }} == *'.tar.gz' ]]; then
+          wget -O android-kernel.tar.gz ${{ env.KERNEL_SOURCE }}
+          mkdir android-kernel
+          tar -C android-kernel/ -zxvf android-kernel.tar.gz
+        elif [[ ${{ env.KERNEL_SOURCE }} =~ git ]]; then
+          git clone ${{ env.KERNEL_SOURCE }} -b ${{ env.KERNEL_SOURCE_BRANCH }} android-kernel --depth=1
         else
           wget -O android-kernel.zip ${{ env.KERNEL_SOURCE }}
           mkdir android-kernel
